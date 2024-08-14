@@ -1,5 +1,5 @@
 <script>
-  import { Button, HoverInfo,InformationIcon } from "$lib/components/index.js";
+  import { Button, HoverInfo, InformationIcon } from "$lib/components/index.js";
 
   /**
    *
@@ -16,10 +16,11 @@
   }
   let size = 100;
   let ceil = 200;
+  let maxNodes = 100;
   export let mergeSortArr = makeArr(size, ceil);
-  let disable = false
+  let disable = false;
 
-  let section = {left: -1, right: -1}
+  let section = { left: -1, right: -1 };
   /**
    *
    * @param {Array<Number>}arr
@@ -86,8 +87,7 @@
    *
    */
   async function mergeSort(arr, left, right) {
-   
-    if (left >= right) return
+    if (left >= right) return;
     const mid = Math.floor(left + (right - left) / 2);
     await mergeSort(arr, left, mid);
     await mergeSort(arr, mid + 1, right);
@@ -111,43 +111,72 @@
     size = Number(e.currentTarget.value);
     mergeSortArr = makeArr(size, ceil);
   }
+  $: outerWidth = 0;
 
+  $: if (outerWidth < 600) {
+    maxNodes = 35;
+    if (size > maxNodes) {
+      size = maxNodes;
+      mergeSortArr = makeArr(size, ceil);
+    }
+  } else if (outerWidth < 1200) {
+    maxNodes = 50;
+    if (size > maxNodes) {
+      size = maxNodes;
+      mergeSortArr = makeArr(size, ceil);
+    }
+  } else if (outerWidth < 1700) {
+    maxNodes = 75;
+    if (size > maxNodes) {
+      size = maxNodes;
+      mergeSortArr = makeArr(size, ceil);
+    }
+  } else {
+    maxNodes = 100;
+  }
 </script>
 
+<svelte:window bind:outerWidth />
+
 <section>
-  <p class="text-xl font-bold flex items-center gap-3 justify-start">Merge Sort <InformationIcon alg="Merge"/></p>
-  <div class="flex gap-3 py-4 h-[500px] w-full justify-center items-center">
+  <p class="text-xl font-bold flex items-center gap-3 justify-start">
+    Merge Sort <InformationIcon alg="Merge" />
+  </p>
+  <div
+    class="flex gap-1 md:gap-2 py-4 h-[500px] w-full justify-center items-center"
+  >
     {#each mergeSortArr as y, idx}
       <p
-        class={`group relative w-3 rounded transition-all duration-200 hover:bg-sky-400 cursor-pointer ${(section.left !==-1 && section.right !== -1) && (section.left <= idx && idx <= section.right) ? 'bg-yellow-400': 'bg-white'}`}
+        class={`group relative min-w-1 lg:min-w-2 rounded transition-all duration-200 hover:bg-sky-400 cursor-pointer ${section.left !== -1 && section.right !== -1 && section.left <= idx && idx <= section.right ? "bg-yellow-400" : "bg-white"}`}
         style="height:{(480 * y) / 200}px"
       >
         <HoverInfo val={y} />
       </p>
     {/each}
   </div>
-  <div class="flex items-center justify-start gap-3">
+  <div class="flex flex-col lg:flex-row gap-2 lg:items-center justify-center">
     <Button
-      disable={disable}
+      {disable}
       variant="secondary"
       click={() => {
         mergeSortArr = makeArr(size, ceil);
       }}>Randomize</Button
     >
     <Button
-      disable={disable}
+      {disable}
       variant="primary"
-      click={async () =>{
+      click={async () => {
         disable = true;
-        await mergeSort([...mergeSortArr], 0, mergeSortArr.length - 1); disable = false}}
-      >Sort</Button
+        await mergeSort([...mergeSortArr], 0, mergeSortArr.length - 1);
+        disable = false;
+      }}>Sort</Button
     >
     <input
       disabled={disable}
       type="range"
       name="size"
       min="2"
-      max="100"
+      max={maxNodes}
       value={size}
       on:change={(e) => changeSize(e)}
     />

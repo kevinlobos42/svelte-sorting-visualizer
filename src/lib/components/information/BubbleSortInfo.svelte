@@ -5,12 +5,12 @@
 <div
   class="{open
     ? 'visible'
-    : 'invisible'} w-full h-[100vh] bg-black bg-opacity-50 fixed z-50 top-0 grid place-items-center"
+    : 'invisible'} w-[100vw] h-[100vh] bg-black bg-opacity-50 fixed z-50 top-0 left-0 grid place-items-center"
 >
   <div
-    class="relative py-6 px-12 border-white bg-black border-2 rounded-md flex flex-col items-center justify-center"
+    class="overflow-y-auto max-h-[80vh] h-full max-w-[90vw] relative py-6  border-white bg-black border-2 rounded-md flex flex-col items-center justify-center"
   >
-    <div class="h-full w-full">
+    <div class="h-full w-full px-8">
       <button
         class="absolute right-5 top-2 text-2xl"
         on:click={() => (open = false)}>X</button

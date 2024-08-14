@@ -1,5 +1,4 @@
 <script>
-  import { browser } from "$app/environment";
   import {
     BubbleSortInfo,
     QuickSortInfo,
@@ -7,35 +6,7 @@
   } from "$lib/components/index";
 
   export let alg;
-
   let open = false;
-
-  let scrollTop = Number(null);
-  let scrollLeft = Number(null);
-
-  function disableScroll() {
-    if (browser) {
-      scrollTop =
-        window.pageYOffset || window.document.documentElement.scrollTop;
-      (scrollLeft =
-        window.pageXOffset || window.document.documentElement.scrollLeft),
-        (window.onscroll = function () {
-          window.scrollTo(scrollLeft, scrollTop);
-        });
-    }
-  }
-  function enableScroll() {
-    if (browser) {
-      window.onscroll = function () {};
-    }
-  }
-
-  $: if (open) {
-    // prevent scroll
-    disableScroll();
-  } else {
-    enableScroll();
-  }
 
 </script>
 
