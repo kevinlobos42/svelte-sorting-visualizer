@@ -24,7 +24,7 @@
     />
   </svg>
   <p
-    class="invisible group-hover:visible font-normal border-2 border-white rounded-sm p-1 absolute left-[120%] top-[-50%] text-nowrap"
+    class="invisible group-hover:visible font-normal border-2 border-white rounded-sm p-1 absolute left-[120%] top-[-50%] xl:text-nowrap"
   >
     Click for more Information
   </p>
