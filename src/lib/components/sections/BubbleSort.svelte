@@ -15,11 +15,13 @@
   }
   let size = 100;
   let ceil = 200;
+  let speed = 50;
   let maxNodes = 100;
+  let maxSpeed = 1000;
   export let bubbleSortArr = makeArr(size, ceil);
   let disable = false;
 
-  let swappingIndices = { i: -1 };
+  let swappingIndices = { i: -1, c:-1 };
 
   /**
    *
@@ -29,7 +31,7 @@
     for (let i = arr.length; i >= 0; i--) {
       for (let j = 1; j <= i; j++) {
         if (arr[j - 1] > arr[j]) {
-          swappingIndices = { i: j };
+          swappingIndices = { i: j, c: j-1 };
 
           let temp = arr[j - 1];
           arr[j - 1] = arr[j];
@@ -37,9 +39,9 @@
 
           bubbleSortArr = [...arr];
 
-          await new Promise((r) => setTimeout(r, 100));
+          await new Promise((r) => setTimeout(r, speed));
 
-          swappingIndices = { i: -1 };
+          swappingIndices = { i: -1, c: -1 };
         }
       }
     }
@@ -62,6 +64,14 @@
     size = Number(e.currentTarget.value);
     bubbleSortArr = makeArr(size, ceil);
   }
+  /**
+   *
+   * @param {Event & { currentTarget: HTMLInputElement }} e
+   */
+  function changeSpeed(e) {
+    speed = Number(e.currentTarget.value);
+  }
+
   $: outerWidth = 0;
 
   $: if (outerWidth < 600) {
@@ -99,7 +109,7 @@
     {#each bubbleSortArr as y, idx}
       <p
         id={`BubbleSortNode${idx}`}
-        class={`group relative min-w-1 lg:min-w-2 rounded hover:bg-sky-400 cursor-pointer ${idx === swappingIndices.i ? "bg-yellow-300" : "bg-white"}`}
+        class={`group relative min-w-1 lg:min-w-2 rounded hover:bg-sky-400 cursor-pointer ${idx === swappingIndices.i ? "bg-yellow-300" : idx === swappingIndices.c ? "bg-sky-300" :"bg-white"}`}
         style="height:{(480 * y) / 200}px"
       >
         <HoverInfo val={y} />
@@ -143,5 +153,15 @@
       on:change={(e) => changeCeil(e)}
     />
     <label for="ceil">Max Height: {ceil}</label>
+    <input
+      disabled={disable}
+      type="range"
+      name="Speed"
+      min="5"
+      max={maxSpeed}
+      value={speed}
+      on:change={(e) => changeSpeed(e)}
+    />
+    <label for="Speed">Sorting Speed: {speed}ms</label>
   </div>
 </section>

@@ -16,7 +16,9 @@
   }
   let size = 100;
   let ceil = 200;
+  let speed = 50;
   let maxNodes = 100;
+  let maxSpeed = 1000;
   export let mergeSortArr = makeArr(size, ceil);
   let disable = false;
 
@@ -54,7 +56,7 @@
       }
       k++;
       mergeSortArr = [...arr]; // Update the array to trigger reactivity
-      await new Promise((r) => setTimeout(r, 200)); // Adjust delay as needed
+      await new Promise((r) => setTimeout(r, speed)); // Adjust delay as needed
     }
 
     // Copy remaining elements of L[]
@@ -63,7 +65,7 @@
       i++;
       k++;
       mergeSortArr = [...arr]; // Update the array to trigger reactivity
-      await new Promise((r) => setTimeout(r, 200)); // Adjust delay as needed
+      await new Promise((r) => setTimeout(r, speed)); // Adjust delay as needed
     }
 
     // Copy remaining elemnts of R[]
@@ -72,7 +74,7 @@
       j++;
       k++;
       mergeSortArr = [...arr]; // Update the array to trigger reactivity
-      await new Promise((r) => setTimeout(r, 200)); // Adjust delay as needed
+      await new Promise((r) => setTimeout(r, speed)); // Adjust delay as needed
     }
 
     section.left = -1;
@@ -111,6 +113,14 @@
     size = Number(e.currentTarget.value);
     mergeSortArr = makeArr(size, ceil);
   }
+  /**
+   *
+   * @param {Event & { currentTarget: HTMLInputElement }} e
+   */
+  function changeSpeed(e) {
+    speed = Number(e.currentTarget.value);
+  }
+
   $: outerWidth = 0;
 
   $: if (outerWidth < 600) {
@@ -191,5 +201,15 @@
       on:change={(e) => changeCeil(e)}
     />
     <label for="ceil">Max Height: {ceil}</label>
+    <input
+      disabled={disable}
+      type="range"
+      name="Speed"
+      min="5"
+      max={maxSpeed}
+      value={speed}
+      on:change={(e) => changeSpeed(e)}
+    />
+    <label for="Speed">Sorting Speed: {speed}ms</label>
   </div>
 </section>

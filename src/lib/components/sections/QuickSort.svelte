@@ -16,7 +16,9 @@
   }
   let size = 100;
   let ceil = 200;
+  let speed = 50;
   let maxNodes = 100;
+  let maxSpeed = 1000;
   export let quickSortArr = makeArr(size, ceil);
   let disable = false;
 
@@ -52,13 +54,13 @@
         [arr[i], arr[j]] = [arr[j], arr[i]];
         quickSortArr = [...arr];
 
-        await new Promise((r) => setTimeout(r, 20));
+        await new Promise((r) => setTimeout(r, speed));
       }
     }
     [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
     quickSortArr = [...arr];
 
-    await new Promise((r) => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, speed));
 
     return i + 1;
   }
@@ -94,6 +96,14 @@
     size = Number(e.currentTarget.value);
     quickSortArr = makeArr(size, ceil);
   }
+
+   /**
+   *
+   * @param {Event & { currentTarget: HTMLInputElement }} e
+   */
+   function changeSpeed(e) {
+    speed = Number(e.currentTarget.value);
+  } 
 
   $: outerWidth = 0;
 
@@ -172,5 +182,15 @@
       on:change={(e) => changeCeil(e)}
     />
     <label for="ceil">Max Height: {ceil}</label>
+    <input
+      disabled={disable}
+      type="range"
+      name="Speed"
+      min="5"
+      max={maxSpeed}
+      value={speed}
+      on:change={(e) => changeSpeed(e)}
+    />
+    <label for="Speed">Sorting Speed: {speed}ms</label>
   </div>
 </section>
